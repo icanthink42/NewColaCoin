@@ -7,7 +7,8 @@ Params:
 
 Example:
 ```bash
-echo '{"user_id":"DISCORD USER ID","amount":COLACOIN AMOUNT,"token":"APP TOKEN"}' | http POST endpoint/voucher/create --json```
+echo '{"user_id":"DISCORD USER ID","amount":COLACOIN AMOUNT,"token":"APP TOKEN"}' | http POST endpoint/voucher/create --json
+```
 **/voucher/redeem**
 Redeem a voucher. 
 Params:
@@ -17,4 +18,5 @@ Params:
 
 Example:
 ```bash
-echo '{"user_id":"DISCORD USER ID","voucher_id":"VOUCHER ID","token":"APP TOKEN"}' | http POST endpoint/voucher/redeem --json```
+echo '{"user_id":"DISCORD USER ID","voucher_id":"VOUCHER ID","token":"APP TOKEN"}' | http POST endpoint/voucher/redeem --json
+```
