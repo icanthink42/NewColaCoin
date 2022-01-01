@@ -78,6 +78,19 @@ async def api_get_user():
     return {"data": c_user.__dict__}, 200
 
 
+@app.route("/get_top", methods=["POST"])
+async def api_get_top():
+    args = request.json
+    if args["token"] not in api_data.apps:
+        return {"data": "Invalid token!"}, 403
+    sorted_users = user.get_sorted_users()
+    out = []
+    for i in sorted_users:
+        i_user = user.get_user(i)
+        out.append(i_user.__dict__)
+    return {"data": out}, 200
+
+
 def check_arg(args, args_required):
     out = ""
     fail = False

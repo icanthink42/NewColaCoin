@@ -38,3 +38,15 @@ Example:
 ```bash
 echo '{"user_id":USER ID,"token":"TOKEN"}' | http POST endpoint/get_user --json
 ```
+**/get_top**
+
+Get all user sorted in order of wealth
+
+Params:
+- `token`
+
+Example:
+```bash
+echo '{"token":"TOKEN"}' | http POST
+endpoint/get_top --json
+```
