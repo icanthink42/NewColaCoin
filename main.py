@@ -45,7 +45,11 @@ async def on_ready():
     if reset_transactions_on_restart:
         api_data.transactions = {}
         api_data.save_transactions()
-    t = threading.Thread(target=app.run)
+
+    def run():
+        app.run(host="0.0.0.0")
+
+    t = threading.Thread(target=run)
     t.start()
 
     print('We have logged in as {0.user}'.format(client))
@@ -54,7 +58,6 @@ async def on_ready():
 # Test: echo '{"transaction_id":"ID","token":"fdf06c0d-6a82-11ec-b519-94b86d28e38e"}' | http POST http://127.0.0.1:5000/get_transaction --json
 @app.route("/get_transaction", methods=["POST"])
 async def api_get_transaction():
-    print("t")
     args = request.json
     if args["token"] not in api_data.apps:
         return {"data": "Invalid token!"}, 403
@@ -62,6 +65,17 @@ async def api_get_transaction():
         return {"message": "No transaction with id " + args["transaction_id"] + "!"}, 400
     transaction = api_data.transactions[args["transaction_id"]]
     return {"data": transaction.__dict__}, 200
+
+
+@app.route("/get_user", methods=["POST"])
+async def api_get_user():
+    args = request.json
+    if args["token"] not in api_data.apps:
+        return {"data": "Invalid token!"}, 403
+    if args["user_id"] not in user.users:
+        return {"message": "No user with id " + args["user_id"] + "!"}, 400
+    c_user = user.users[args["user_id"]]
+    return {"data": c_user.__dict__}, 200
 
 
 def check_arg(args, args_required):
@@ -151,6 +165,7 @@ async def api_create_voucher():
     )
     api_data.save_vouchers()
     return {"voucher_id": voucher_id}, 200
+
 
 # echo '{"user_id":"343545158140428289","voucher_id":"a953f378-6aa3-11ec-89ea-94b86d28e38e","token":"fdf06c0d-6a82-11ec-b519-94b86d28e38e"}' | http POST http://127.0.0.1:5000/voucher/redeem --json
 @app.route("/voucher/redeem", methods=["POST"])
